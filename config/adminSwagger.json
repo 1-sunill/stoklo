@@ -1,0 +1,138 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "title": "Stoklo Admin API",
+      "version": "1.0.0"
+    },
+    "tags": [
+      {
+        "name": "Auth",
+        "description": "Endpoints for the admin auth management"
+      },
+      {
+        "name": "Home Configuration",
+        "description": "Endpoints for home comfigurations tasks"
+      }
+    ],
+    "servers": [
+      {
+        "url": "http://localhost:3005", 
+        "description": "Local Development Server"
+      }
+    ],
+    "components": {
+      "securitySchemes": {
+        "bearerAuth": {
+          "type": "http",
+          "scheme": "bearer",
+          "bearerFormat": "JWT",
+          "description": "Authentication token (JWT) required to access protected endpoints."
+        }
+      }
+    },
+    "security": [
+      {
+        "bearerAuth": []
+      }
+    ],
+    "paths": {
+      "/admin/login": {
+        "post": {
+          "summary": "Admin login using email and password",
+          "tags": ["Auth"],
+          "requestBody": {
+            "description": "Enter email",
+            "required": true,
+            "content": {
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "email": {
+                      "type": "string",
+                      "default": "tsunil870@gmail.com"
+                    },
+                    "password": {
+                        "type": "string",
+                        "default": "12345678"
+                      }
+                  }
+                }
+              }
+           
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Login successful"
+            }
+          }
+        }
+      },    
+      "/admin/forgot-password": {
+        "post": {
+          "summary": "Forgot password",
+          "tags": ["Auth"],
+          "requestBody": {
+            "description": "Forgot password",
+            "required": true,
+            "content": {
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "email": {
+                      "type": "string",
+                      "default": "tsunil870@gmail.com"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Email send successfully"
+            }
+          }
+        }
+      },    
+      "/admin/home": {
+        "post": {
+          "summary": "Home Configuration",
+          "tags": ["Home Configuration"],
+          "requestBody": {
+            "description": "Update user details",
+            "required": true,
+            "content": {
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "originalShiftId": {
+                      "type": "integer",
+                      "default": "1"
+                    },
+                    "newShiftId": {
+                      "type": "integer",
+                      "default": "2"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Code execution successfully (Admin)"
+             
+            },
+            "400": {
+              "description": "Bad request. Missing or invalid 'name' in the request."
+            }
+          }
+        }
+      }
+    }
+  }
+  

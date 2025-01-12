@@ -1,0 +1,1115 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "title": "Stoklo Application API",
+      "version": "1.0.0"
+    },
+    "tags": [
+      {
+        "name": "Auth",
+        "description": "Endpoints for the Auth"
+      },
+      {
+        "name": "Product",
+        "description": "Endpoints for product tasks"
+      }
+    ],
+    "servers": [
+      {
+        "url": "http://13.235.137.221:3005",
+        "description": "Development Server"
+      },
+      {
+        "url": "http://localhost:3001", 
+        "description": "Local Development Server"
+      }
+    ],
+    "components": {
+      "securitySchemes": {
+        "bearerAuth": {
+          "type": "http",
+          "scheme": "bearer",
+          "bearerFormat": "JWT",
+          "description": "Authentication token (JWT) required to access protected endpoints."
+        }
+      },
+      "parameters": {
+        "Accept-Language": {
+          "name": "Accept-Language",
+          "in": "header",
+          "description": "Language preferences for the response",
+          "required": false,
+          "schema": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "security": [
+      {
+        "bearerAuth": []
+      }
+    ],
+    
+    "paths": {
+      "/api/login": {
+        "post": {
+          "summary": "Mobile login using mobile number",
+          "tags": ["Auth"],
+          "requestBody": {
+            "description": "Enter user mobile number",
+            "required": true,
+            "content": {
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "mobile_number": {
+                      "type": "string",
+                      "default": "+917007979552"
+                    }
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "mobile_number": {
+                      "type": "string",
+                      "default": "+917007979552"
+                    }
+                  }
+                }
+              }
+           
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Login successful"
+            }
+          }
+        }
+      },    
+      "/api/verify-otp": {
+        "post": {
+          "summary": "Verify OTP",
+          "tags": ["Auth"],
+          "requestBody": {
+            "description": "After verifying the OTP, you get the JWT token.",
+            "required": true,
+            "content": {
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "mobile_number": {
+                      "type": "string",
+                      "default": "+917007979552"
+                    },
+                    "otp": {
+                      "type": "string",
+                      "default": "1234"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "OTP verified successfully"
+            }
+          }
+        }
+      }, 
+      "/api/onboarding-bonus": {
+        "post": {
+          "summary": "Request for onboarding bonus update. Types of transactions: 1 => Credit (request for admin), 2 => Debit (request for admin), 3 => Earned, 4 => Spent.",
+          "tags": ["Auth"],
+          "responses": {
+            "200": {
+              "description": "Onboarding bonus updated successfully"
+            }
+          }
+        }
+      }, 
+      "/api/delete-account": {
+        "post": {
+          "summary": "Delete account",
+          "tags": ["Auth"],
+          "responses": {
+            "200": {
+              "description": "Request submitted successfully"
+            }
+          }
+        }
+      },    
+      "/api/wallet-transactions": {
+        "get": {
+          "summary": "wallet transactions",
+          "tags": ["Auth"],
+          "parameters": [
+            {
+              "name": "page",
+              "in": "query",
+              "description": "pagination key",
+              "required": false,
+              "schema": {
+                "type": "integer"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "wallet transactions listed successfully"
+            }
+          }
+        }
+      },
+      "/api/notification-list": {
+        "get": {
+          "summary": "notification list",
+          "tags": ["Auth"],
+          "parameters": [
+            {
+              "name": "page",
+              "in": "query",
+              "description": "pagination key",
+              "required": false,
+              "schema": {
+                "type": "integer"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "notification listed successfully"
+            }
+          }
+        }
+      },
+      "/api/user-detail": {
+        "get": {
+          "summary": "user details",
+          "tags": ["Auth"],
+          "responses": {
+            "200": {
+              "description": "wallet transactions listed successfully"
+            }
+          }
+        }
+      },
+      
+      "/api/update-user-details": {
+        "post": {
+          "summary": "Create a greeting message (Application)",
+          "tags": ["Auth"],
+          "requestBody": {
+            "description": "Update user details",
+            "required": true,
+            "content": {
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "retailerName": {
+                      "type": "string",
+                      "default": "retailerName"
+                    },
+                    "secondaryMobileNumber": {
+                      "type": "string",
+                      "default": "+919837635466"
+                    },
+                    "aadharNumber": {
+                      "type": "integer",
+                      "default": "1234567890"
+                    },
+                    "email": {
+                      "type": "string",
+                      "default": "tsunil870888@gmail.com"
+                    },
+                    "phoneNumber": {
+                      "type": "string",
+                      "default": "+121 343422"
+                    },
+                    "shopLocation": {
+                      "type": "string",
+                      "default": "A block-199, Noida"
+                    },
+                    "referralCode": {
+                      "type": "string",
+                      "default": "ABVDf1252"
+                    },
+                    "isWhatsapp": {
+                      "type": "integer",
+                      "default": 0,
+                      "enum": [0, 1],
+                      "description": "0 for non-WhatsApp, 1 for WhatsApp"
+                    }
+                    ,
+                    "isUpdateOnEmail": {
+                      "type": "integer",
+                      "default": 0,
+                      "enum": [0, 1],
+                      "description": "0 for non-update on email, 1 for email"
+                    },
+                    "language": {
+                      "type": "integer",
+                      "default": "1"
+                    },
+                    "shopName": {
+                      "type": "string",
+                      "default": "Raju medical store"
+                    },
+                    "type": {
+                      "type": "integer",
+                      "default": "1"
+                    },
+                    "panBussiness": {
+                      "type": "string",
+                      "default": "ABCD1234GHIJ"
+                    },
+                    "panName": {
+                      "type": "string",
+                      "default": "Testing pan"
+                    },
+                    "gstNumber": {
+                      "type": "string",
+                      "default": "LISNB12345"
+                    },
+                    "shopImage": {
+                      "type": "file"
+                    },
+                    "panImage": {
+                      "type": "file"
+                    },
+                    "licenceNumber": {
+                      "type": "string",
+                      "default": "LISNB12345"
+                    },
+                    "expiryDate": {
+                      "type": "string",
+                      "default":"2023-10-26 11:48:11"
+                    },
+                    "storeImage": {
+                      "type": "file"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Greeting created successfully (Application)"
+             
+            },
+            "400": {
+              "description": "Bad request. Missing or invalid 'name' in the request."
+            }
+          }
+        }
+      },
+      "/api/ownership-type-list": {
+        "get": {
+          "summary": "Owner types",
+          "tags": ["Auth"],
+         
+          "responses": {
+            "200": {
+              "description": "Owner types listed successfully"
+            }
+          }
+        }
+      },
+      "/api//licence-list": {
+        "get": {
+          "summary": "Licence List",
+          "tags": ["Auth"],
+         
+          "responses": {
+            "200": {
+              "description": "Licence listed successfully"
+            }
+          }
+        }
+      },
+      "/api/language-list": {
+        "get": {
+          "summary": "Language list",
+          "tags": ["Auth"],
+         
+          "responses": {
+            "200": {
+              "description": "Language list listed successfully"
+            }
+          }
+        }
+      },
+      "/api/onboarding-bonus-point": {
+        "get": {
+          "summary": "Language list",
+          "tags": ["Auth"],
+         
+          "responses": {
+            "200": {
+              "description": "Language list listed successfully"
+            }
+          }
+        }
+      },
+      "/api/send-update-request": {
+        "post": {
+          "summary": "send-update-request",
+          "tags": ["Auth"],
+          "requestBody": {
+            "description": "send-update-request.",
+            "required": true,
+            "content": {
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "newShopLocation": {
+                      "type": "string",
+                      "default": "New Location"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "request api run successfully"
+            }
+          }
+        }
+      },
+      "/api/insert-licence-details": {
+        "post": {
+          "summary": "Add licence data",
+          "tags": ["Auth"],
+          "requestBody": {
+            "description": "Add licence data",
+            "required": true,
+            "content": {
+              "multipart/form-data": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "licenceDetail": {
+                      "type": "string",
+                      "default": "[{\"licenceNumber\":\"2313\",\"expiryDate\":\"2023-12-04T01:46:00.000Z\",\"approvedLicenceName\":\"20A\"},{\"licenceNumber\":\"123213\",\"expiryDate\":\"2023-12-04T01:46:00.000Z\",\"approvedLicenceName\":\"21A\"}]"
+                    },
+                    "storeImage": {
+                      "type": "file"
+                     
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "help support api run successfully"
+            }
+          }
+        }
+      },
+      "/api/product-list": {
+        "get": {
+          "summary": "Products list",
+          "tags": ["Product"],
+          "parameters": [
+            {
+              "name": "search",
+              "in": "query",
+              "description": "Search query for products",
+              "required": false,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Product list listed successfully"
+            }
+          }
+        }
+      },
+      "/api/rocommanded-products-list": {
+        "get": {
+          "summary": "Rocommanded Products list",
+          "tags": ["Product"],
+          "responses": {
+            "200": {
+              "description": "Product list listed successfully"
+            }
+          }
+        }
+      },
+      "/api/view-all-filtered-products": {
+        "get": {
+          "summary": "View all filtered products",
+          "tags": ["Product"],
+          "parameters": [
+            {
+              "name": "page",
+              "in": "query",
+              "description": "Pagination",
+              "required": false,
+              "schema": {
+                "type": "integer"
+              }
+            },
+            {
+              "name": "categoryId",
+              "in": "query",
+              "description": "category wise filter",
+              "required": false,
+              "schema": {
+                "type": "integer"
+              }
+            },
+            {
+              "name": "search",
+              "in": "query",
+              "description": "search",
+              "required": false,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Filter Product list listed successfully"
+            }
+          }
+        }
+      },
+      "/api/product-detail": {
+        "get": {
+          "summary": "Product detail",
+          "tags": ["Product"],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "query",
+              "description": "Enter product id",
+              "required": false,
+              "schema": {
+                "type": "integer",
+                "default":1
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Cart list listed successfully"
+            }
+          }
+        }
+      },
+      "/api/add-to-cart": {
+        "post": {
+          "summary": "Add to cart",
+          "tags": ["Cart"],
+          "requestBody": {
+            "description": "Add to cart product or when give quantity 0 then cart deleted from the cart.",
+            "required": true,
+            "content": {
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "product_id": {
+                      "type": "integer",
+                      "default": "2"
+                    },
+                    "quantity": {
+                      "type": "integer",
+                      "default": "1"
+                    },
+                    "type": {
+                      "type": "integer",
+                      "default": "1"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "add to cart api run successfully"
+            }
+          }
+        }
+      },
+      "/api/repeat-cart": {
+        "post": {
+          "summary": "Repeat to cart",
+          "tags": ["Cart"],
+          "requestBody": {
+            "description": "Repeat to cart",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "productId": {
+                            "type": "integer",
+                            "example": 42
+                          },
+                          "qty": {
+                            "type": "integer",
+                            "example": 2
+                          }
+                        },
+                        "required": ["productId", "qty"]
+                      },
+                      "example": [
+                        {
+                          "productId": 42,
+                          "qty": 2
+                        },
+                        {
+                          "productId": 38,
+                          "qty": 3
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            },
+            "responses": {
+              "200": {
+                "description": "Repeat to cart API run successfully"
+              }
+            }
+          }
+        }
+      }
+      ,
+      "/api/cart-list": {
+        "get": {
+          "summary": "Cart list",
+          "tags": ["Cart"],
+          "parameters": [
+            {
+              "name": "couponCode",
+              "in": "query",
+              "description": "Enter if have Coupon code ",
+              "required": false,
+              "schema": {
+                "type": "string",
+                "default":"HOLI_OFFER_FLAT"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Cart list listed successfully"
+            }
+          }
+        }
+      },
+      "/api/apply-coupon": {
+        "post": {
+          "summary": "Apply coupon",
+          "tags": ["Cart"],
+          "requestBody": {
+            "description": "Apply coupon",
+            "required": true,
+            "content": {
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "couponId": {
+                      "type": "integer",
+                      "default": "1"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Apply coupon"
+            }
+          }
+        }
+      },
+      "/api/help-support": {
+        "post": {
+          "summary": "Help & Support",
+          "tags": ["Common API's"],
+          "requestBody": {
+            "description": "Help & support submit.",
+            "required": true,
+            "content": {
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "default": "Ripenapps"
+                    },
+                    "email": {
+                      "type": "string",
+                      "default": "ripen@gmail.com"
+                    },
+                    "phone": {
+                      "type": "string",
+                      "default": "+917007979552"
+                    },
+                    "bussinessName": {
+                      "type": "string",
+                      "default": "Ripenapps Technology"
+                    },
+                    "description": {
+                      "type": "string",
+                      "default": "Ripenapps Technology desciption."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "OTP verified successfully"
+            }
+          }
+        }
+      },
+      "/api/order-help-support": {
+        "post": {
+          "summary": "Order Help & Support",
+          "tags": ["Common API's"],
+          "requestBody": {
+            "description": "Order Help & support submit.",
+            "required": true,
+            "content": {
+              "multipart/form-data": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "default": "Ripenapps"
+                    },
+                    "email": {
+                      "type": "string",
+                      "default": "ripen@gmail.com"
+                    },
+                    "phone": {
+                      "type": "string",
+                      "default": "+917007979552"
+                    },
+                    "bussinessName": {
+                      "type": "string",
+                      "default": "Ripenapps Technology"
+                    },
+                    "description": {
+                      "type": "string",
+                      "default": "Ripenapps Technology desciption."
+                    },
+                    "orderId": {
+                      "type": "string",
+                      "default": "C463FB8CCC9E4B65"
+                    },
+                    "image": {
+                      "type": "file"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "OTP verified successfully"
+            }
+          }
+        }
+      },
+      "/api/order-history": {
+        "get": {
+          "summary": "Order history list",
+          "tags": ["Order"],
+          "parameters": [
+            {
+              "name": "status",
+              "in": "query",
+              "description": "0=>pending,1=>processing as accepted ,2=>shipped,3=>delivered,4=>cancelled",
+              "required": false,
+              "schema": {
+                "type": "integer"
+              }
+            },
+            {
+              "name": "page",
+              "in": "query",
+              "description": "pagination key",
+              "required": false,
+              "schema": {
+                "type": "integer"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Order history listed successfully"
+            }
+          }
+        }
+      },
+      "/api/create-order": {
+        "post": {
+          "summary": "Create Order",
+          "tags": ["Order"],
+          
+          "responses": {
+            "200": {
+              "description": "Order Created successfully"
+            }
+          }
+        }
+      },
+      "/api/order-detail": {
+        "get": {
+          "summary": "Order details",
+          "tags": ["Order"],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "query",
+              "description": "order detail",
+              "required": true,
+              "schema": {
+                "type": "integer"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Order detail fetched successfully"
+            }
+          }
+        }
+      },
+      "/api/cancel-order": {
+        "post": {
+          "summary": "Cancel order",
+          "tags": ["Order"],
+          "requestBody": {
+            "description": "Cancel order.",
+            "required": true,
+            "content": {
+              "multipart/form-data": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "orderId": {
+                      "type": "integer",
+                      "default": 2
+                    },
+                    "cancelReason": {
+                      "type": "string",
+                      "default": "Testing reason"
+                    },
+                    "cancelDescription": {
+                      "type": "string",
+                      "default": "Testing description"
+                    },
+                    "cancelImage": {
+                      "type": "file"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Order cancelled successfully"
+            }
+          }
+        }
+      },
+      "/api/offers-list": {
+        "get": {
+          "summary": "Offer list",
+          "tags": ["Offers"],
+         
+          "responses": {
+            "200": {
+              "description": "Offer list listed successfully"
+            }
+          }
+        }
+      },
+      "/api/offers-detail": {
+        "get": {
+          "summary": "Offer detail",
+          "tags": ["Offers"],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "query",
+              "description": "Enter offer as coupon id ",
+              "required": false,
+              "schema": {
+                "type": "integer",
+                "default":"1"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Offer detail fetched successfully"
+            }
+          }
+        }
+      },
+      "/api/home-configuration": {
+        "get": {
+          "summary": "home configuration",
+          "tags": ["Home"],
+         
+          "responses": {
+            "200": {
+              "description": "home configuration data successfully"
+            }
+          }
+        }
+      },
+      "/api/payment": {
+        "post": {
+          "summary": "Payment from phone pay",
+          "tags": ["Payment"],
+          "requestBody": {
+            "description": "Pament.",
+            "required": true,
+            "content": {
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "default": "Ripen Apps"
+                    },
+                    "number": {
+                      "type": "string",
+                      "default": "9227262522"
+                    },
+                    "amount": {
+                      "type": "integer",
+                      "default": "100"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "OTP verified successfully"
+            }
+          }
+        }
+      },
+      "/api/digital-shotbook-list": {
+        "get": {
+          "summary": "Shot book list",
+          "tags": ["Shotbook"],
+          "parameters": [
+            {
+              "name": "page",
+              "in": "query",
+              "description": "pagination key",
+              "required": false,
+              "schema": {
+                "type": "integer"
+              }
+            },
+            {
+              "name": "status",
+              "in": "query",
+              "description": "Filter by status (1=>processing,2=>cart-made)",
+              "required": false,
+              "schema": {
+                "type": "integer",
+                "enum": [1, 2]
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Shotbook list listed successfully"
+            }
+          }
+        }
+      },
+      "/api/digital-shotbook": {
+        "post": {
+          "summary": "Digital shotbook",
+          "tags": ["Shotbook"],
+          "requestBody": {
+            "description": "Digital shotbook.",
+            "required": true,
+            "content": {
+              "multipart/form-data": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "shopBookimage": {
+                      "type": "file"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Shotbook uploaded successfully"
+            }
+          }
+        }
+      },
+      "/api/training-list": {
+        "get": {
+          "summary": "Training module",
+          "tags": ["Common API's"],
+         
+          "responses": {
+            "200": {
+              "description": "Data fetched successfully"
+            }
+          }
+        }
+      },
+      "/api/notification-status": {
+        "post": {
+          "summary": "Notification status update",
+          "tags": ["Common API's"],
+          "responses": {
+            "200": {
+              "description": "Data updated successfully"
+            }
+          }
+        }
+      },
+      "/api/about-us": {
+        "get": {
+          "summary": "About Us",
+          "tags": ["Common API's"],
+         
+          "responses": {
+            "200": {
+              "description": "Data fetched successfully"
+            }
+          }
+        }
+      },
+      "/api/privacy-policy": {
+        "get": {
+          "summary": "privacy policy",
+          "tags": ["Common API's"],
+         
+          "responses": {
+            "200": {
+              "description": "Data fetched successfully"
+            }
+          }
+        }
+      },
+      "/api/term-condition": {
+        "get": {
+          "summary": "term condition",
+          "tags": ["Common API's"],
+         
+          "responses": {
+            "200": {
+              "description": "Data fetched successfully"
+            }
+          }
+        }
+      },
+      "/admin/slices-list": {
+        "get": {
+          "summary": "slices list",
+          "tags": ["Spin the wheel"],
+         
+          "responses": {
+            "200": {
+              "description": "Data fetched successfully"
+            }
+          }
+        }
+      },
+      "/api/cash-back": {
+        "get": {
+          "summary": "cash back",
+          "tags": ["Cart"],
+         
+          "responses": {
+            "200": {
+              "description": "Data fetched successfully"
+            }
+          }
+        }
+      },
+      "/api/spin-wheel": {
+        "post": {
+          "summary": "Spin the wheel",
+          "tags": ["Spin the wheel"],
+          "requestBody": {
+            "description": "Spin the wheel",
+            "required": true,
+            "content": {
+              "application/x-www-form-urlencoded": {
+                "sliceId": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "integer",
+                      "default": "1"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "API run successfully"
+            }
+          }
+        }
+      }
+
+     
+    }
+    
+  }
+  
